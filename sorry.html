@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favorite Person</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff0f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 75, 110, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 { color: #ff4d6d; margin-bottom: 10px; }
+        p { color: #590d22; font-size: 1.1rem; line-height: 1.5; }
+
+        .btn {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #ff758f;
+            transform: scale(1.05);
+        }
+
+        /* Meter Styling */
+        .meter-container {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 30px;
+            background: #eee;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #ff4d6d;
+            position: relative;
+        }
+
+        .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffb3c1, #ff4d6d);
+            transition: width 2s ease-in-out;
+        }
+
+        .percentage {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #ff4d6d;
+            margin-top: 10px;
+        }
+
+        .hidden { display: none; }
+        
+        .broken-msg {
+            color: #c9184a;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="page1">
+        <h1>Hey [Name]! ❤️</h1>
+        <p>I was just sitting here thinking about how incredibly lucky I am to have you. You make every day a little brighter just by being you.</p>
+        <button class="btn" onclick="startTest()">Let's check your cuteness</button>
+    </div>
+
+    <div class="container hidden" id="page2">
+        <h1>Cuteness Scanner</h1>
+        <p>Analyzing... please wait...</p>
+        <div class="meter-bar">
+            <div class="fill" id="meterFill"></div>
+        </div>
+        <div class="percentage" id="percentText">0%</div>
+        <div class="broken-msg" id="brokenMsg">⚠️ ERROR: SCALE BROKEN! <br> TOO CUTE TO MEASURE!</div>
+    </div>
+
+    <script>
+        function startTest() {
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+            
+            let fill = document.getElementById('meterFill');
+            let text = document.getElementById('percentText');
+            let broken = document.getElementById('brokenMsg');
+            let count = 0;
+
+            let interval = setInterval(() => {
+                count += 1;
+                fill.style.width = count + '%';
+                text.innerText = count + '%';
+
+                if (count >= 100) {
+                    // Start the "breaking" part
+                    clearInterval(interval);
+                    let overCount = 100;
+                    let breakInterval = setInterval(() => {
+                        overCount += Math.floor(Math.random() * 50);
+                        text.innerText = overCount + '%';
+                        fill.style.width = '110%'; // Overflow look
+                        fill.style.backgroundColor = '#ff0000';
+                        
+                        if (overCount > 999) {
+                            clearInterval(breakInterval);
+                            text.innerText = "∞ %";
+                            broken.style.display = 'block';
+                        }
+                    }, 100);
+                }
+            }, 30);
+        }
+    </script>
+</body>
+</html>
